@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Headline Sentiment Analysis for Equities</title>
+    <style>
+        .positive { color: green; }
+        .negative { color: red; }
+        .neutral { color: gray; }
+    </style>
+</head>
+<body>
+    <h1>Sentiment Analysis for Multiple Tickers</h1>
+    <form method="POST">
+        <label for="tickers">Enter Stock Tickers (comma-separated):</label>
+        <input type="text" id="tickers" name="tickers" required>
+        <button type="submit">Analyze</button>
+    </form>
+    
+    <h2>Results</h2>
+    <table border="1">
+        <tr>
+            <th>Ticker</th>
+            <th>Skew</th>
+            <th>Percent Positive</th>
+            <th>Percent Neutral</th>
+            <th>Percent Negative</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{ result.Ticker }}</td>
+            <td class="{{ 'positive' if result.Skew == 'Positive' else 'negative' if result.Skew == 'Negative' else 'neutral' }}">
+                {{ result.Skew }}
+            </td>
+            <td>{{ result["Percent Positive"] }}%</td>
+            <td>{{ result["Percent Neutral"] }}%</td>
+            <td>{{ result["Percent Negative"] }}%</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Sentiment Distribution Charts</h2>
+    {% for ticker, chart in charts.items() %}
+        <h3>{{ ticker }}</h3>
+        <div>{{ chart|safe }}</div>
+    {% endfor %}
+</body>
+</html>
